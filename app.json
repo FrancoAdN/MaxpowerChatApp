@@ -1,0 +1,12 @@
+{
+  "name": "MaxpowerChatApp",
+  "displayName": "MaxpowerChatApp",
+  "expo": {
+    "name": "MaxpowerChatApp",
+    "slug": "MaxpowerChatApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
