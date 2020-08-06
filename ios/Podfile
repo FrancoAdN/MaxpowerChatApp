@@ -86,6 +86,18 @@ target 'MaxpowerChatApp' do
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
   add_flipper_pods!
+  pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   post_install do |installer|
     flipper_post_install(installer)
   end
