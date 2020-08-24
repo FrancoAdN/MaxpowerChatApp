@@ -1,18 +1,11 @@
 import React, { createContext, useState, useRef, useEffect } from 'react'
 import io from 'socket.io-client'
-import {notificationManager} from './NotificationManager'
-// import uuid from 'react-native-uuid'
+
 
 
 
 export const SockContext = createContext()
 
-// const testPush = () => {
-//     PushNotification.localNotification({
-//         title: "Test title notif",
-//         message: "Message notif"
-//     })
-// }
 
 export default function ChatProv(props) {
 
@@ -26,20 +19,18 @@ export default function ChatProv(props) {
     const [chats, setChats] = useState([])
     // const [chats, setChats] = useState(testdata)
     const chatRef = useRef()
-    let locaNot = notificationManager
+
+
 
     useEffect(() => {
-        
-        locaNot.configure()
-        locaNot.showNotification(1,  "test", "test", {}, {})
-        socket.current = io("http://api.maxpower-ar.com/")
-        // socket.current = io("http://192.168.0.14:3500/")
 
-        socket.current.emit('server_conn')
 
-        // socket.current.on('existing_conv', (chat) => {
-        //     setChats(chats => [...chats, chat])
-        // })
+        //socket.current = io("http://api.maxpower-ar.com/")
+
+
+        //socket.current.emit('server_conn')
+
+
 
         socket.current.on('client_message', (data) => {
             const new_msg = { from: 1, msg: data.msg }
@@ -48,7 +39,10 @@ export default function ChatProv(props) {
 
         socket.current.on('new_client_conn', (new_chat) => {
             setChats(chats => [...chats, new_chat])
-            locaNot.showNotification(1,  "Nueva conexión al chat", new_chat.name, {}, {})
+        })
+
+        socket.current.on('ping', () => {
+            socket.current.emit('ping_receive');
         })
 
         socket.current.on('client_disconnected', (sock) => {
@@ -70,7 +64,7 @@ export default function ChatProv(props) {
 
     useEffect(() => {
         chatRef.current = [...chats]
-        //orderByTimestamp()
+        orderByTimestamp()
 
     }, [chats])
 
@@ -78,7 +72,7 @@ export default function ChatProv(props) {
         const new_msg = { from: 0, msg: data.text }
         addMessageToChat(data.to, new_msg)
         socket.current.emit('server_message', data)
-        //console.log(data)
+
     }
 
     const addMessageToChat = (to, message) => {
@@ -90,7 +84,7 @@ export default function ChatProv(props) {
             if (c.socket_id === to) {
                 message['id'] = (c.messages.length + 1).toString()
                 c.messages = [...c.messages, message]
-                if(message.from) locaNot.showNotification(1,  c.name, message.msg, {}, {})
+
 
                 break
             }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "527872239548",
+    "firebase_url": "https://maxpowerchatapp.firebaseio.com",
+    "project_id": "maxpowerchatapp",
+    "storage_bucket": "maxpowerchatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527872239548:android:c50745cfad79a6c1d42db9",
+        "android_client_info": {
+          "package_name": "com.maxpowerchatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527872239548-d45qcnh004gk9ojr7peddd92tb518tdu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maxpowerchatapp",
+            "certificate_hash": "401f8e52d98747f3cecbcb4416ec2bc948936538"
+          }
+        },
+        {
+          "client_id": "527872239548-iindtjsv54u90qch7ms1fnof9clt9neq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQLXQnS_kTvIvWS069DYMjcjbZCb1udYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527872239548-iindtjsv54u90qch7ms1fnof9clt9neq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
