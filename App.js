@@ -1,6 +1,6 @@
 
 import React, { useEffect, useContext } from 'react'
-import { StyleSheet, AsyncStorage } from 'react-native'
+import { StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { fcmService } from './FCMService'
 import { localNotificationService } from './LocalNotificationService'
@@ -19,12 +19,14 @@ export default function App() {
       //console.log("[App] onRegister: ", token)
       const HAS_LAUNCHED = "hasLaunched"
       AsyncStorage.getItem(HAS_LAUNCHED).then(value => {
+
         if (value === null) {
           const json = { token }
           axios.post("http://api.maxpower-ar.com/device", json).then(() => { }).catch((err) => { })
-          console.log("first launch")
           AsyncStorage.setItem(HAS_LAUNCHED, "true")
         }
+
+
       })
     }
 

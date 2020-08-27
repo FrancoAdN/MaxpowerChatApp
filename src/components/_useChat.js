@@ -27,7 +27,6 @@ export default function ChatProv(props) {
                 })
 
                 socket.current.on('existing_clients', (data) => {
-                    console.log("existing conv")
                     setChats(data)
                 })
 
@@ -81,7 +80,6 @@ export default function ChatProv(props) {
         })
 
         socket.current.on('existing_clients', (data) => {
-            console.log("existing conv")
             setChats(data)
         })
 
