@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually -->
-  <color name="splashscreen_background">#FFFFFF</color>
+    <!-- Primary color (Maxpower red color)-->
+    <color name="primary">#CE110A</color>
+    <!-- Color used to edit text (sender) on the chat view-->
+    <color name="senderColor">#F0F0F0</color>
+    <!-- Message server background color-->
+    <color name="serverMessage">#F4F8F8</color>
+    <!-- Message client background color-->
+    <color name="clientMessage">#CE110A</color>
+    <!-- Server message font color -->
+    <color name="fontMessageServer">#797979</color>
+    <!-- Client message font color -->
+    <color name="fontMessageClient">#FFFFFF</color>
+    <!-- Chat box border bottom -->
+    <color name="chatBoxBorder">#DCDDDE</color>
+    <!-- Sender Edit Text -->
+    <color name="senderEditText">#E3E3E3</color>
+
 </resources>

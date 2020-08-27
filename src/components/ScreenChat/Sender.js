@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Image, TextInput, TouchableOpacity, Platform } from 'react-native'
 
-export default function Sender({send, to}) {
+export default function Sender({ send, to }) {
     const [text, setText] = useState('')
     const handlePress = () => {
         const message = {
@@ -13,9 +13,9 @@ export default function Sender({send, to}) {
     return (
         <View style={styles.sendView}>
             <View style={styles.topView}>
-                <TextInput style={styles.input} value={text} onChangeText={txt => setText(txt)}/>
+                <TextInput style={styles.input} value={text} onChangeText={txt => setText(txt)} />
                 <TouchableOpacity style={styles.sendBtn} onPress={handlePress}>
-                    <Image source={require('./send.png')}/>
+                    <Image source={require('./send.png')} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     sendView: {
         flex: 1.2,
         backgroundColor: '#f0f0f0',
-        paddingTop: (Platform.OS === 'ios') ? 10 : 0 
+        paddingTop: (Platform.OS === 'ios') ? 10 : 0
     },
     topView: {
         flex: 0.7,

@@ -2,12 +2,12 @@ import React from 'react'
 import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
-export default function Content({chat, set}) {
+export default function Content({ chat, set }) {
     return (
         <View style={styles.contentView}>
-            <FlatList 
+            <FlatList
                 data={chat}
-                renderItem={({item}) => (<ChatUser chat={item} set={set}/>)}
+                renderItem={({ item }) => (<ChatUser chat={item} set={set} />)}
                 keyExtractor={item => item.socket_id}
             />
         </View>
@@ -16,7 +16,7 @@ export default function Content({chat, set}) {
 
 
 
-function ChatUser({chat, set}) {
+function ChatUser({ chat, set }) {
     const navigation = useNavigation()
     const handleOn = () => {
         set(chat)
@@ -24,7 +24,7 @@ function ChatUser({chat, set}) {
     }
     return (
         <TouchableOpacity style={styles.chatUserContainer} onPress={handleOn}>
-            <Image source={{uri: 'http://api.maxpower-ar.com/imagen/user.png'}} style={styles.userImg}/>
+            <Image source={{ uri: 'http://api.maxpower-ar.com/imagen/user.png' }} style={styles.userImg} />
             <View style={styles.chatInfo}>
                 <Text numberOfLines={1} style={styles.nameTxt}>{chat.name}</Text>
                 <Text numberOfLines={1} style={styles.lastMessage}>{chat.messages[chat.messages.length - 1].msg}</Text>

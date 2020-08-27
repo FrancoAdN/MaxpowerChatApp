@@ -1,26 +1,12 @@
-/*import { StatusBar } from 'expo-status-bar';
-import React, { useState, useContext, useEffect } from 'react';
-import MainScreen from './src/components/MainScreen'
-import ChatScreen from './src/components/ChatScreen'
-import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack'
-import ChatProv, { SockContext } from './src/components/_useChat'
-import Main from './Main'
 
-export default function App() {
-
-  return (
-    <ChatProv>
-      <Main/>
-    </ChatProv>
-  )
-}*/
-
-
-import React, { useEffect } from 'react'
-import { View, StyleSheet, Text, Button } from 'react-native'
+import React, { useEffect, useContext } from 'react'
+import { StyleSheet, AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 import { fcmService } from './FCMService'
 import { localNotificationService } from './LocalNotificationService'
+import ChatProv from './src/components/_useChat'
+import Main from './Main'
+import axios from 'axios'
 
 export default function App() {
 
@@ -30,11 +16,19 @@ export default function App() {
     localNotificationService.configure(onOpenNotification)
 
     function onRegister(token) {
-      console.log("[App] onRegister: ", token)
+      //console.log("[App] onRegister: ", token)
+      const HAS_LAUNCHED = "hasLaunched"
+      AsyncStorage.getItem(HAS_LAUNCHED).then(value => {
+        if (value === null) {
+          const json = { token }
+          axios.post("http://api.maxpower-ar.com/device", json).then(() => { }).catch((err) => { })
+          console.log("first launch")
+          AsyncStorage.setItem(HAS_LAUNCHED, "true")
+        }
+      })
     }
 
     function onNotification(notify) {
-      console.log("[App] onNotification: ", notify)
       const options = {
         soundName: 'default',
         playSound: true //,
@@ -51,12 +45,12 @@ export default function App() {
     }
 
     function onOpenNotification(notify) {
-      console.log("[App] onOpenNotification: ", notify)
-      alert("Open Notification: " + notify.body)
+      // console.log("[App] onOpenNotification: ", notify)
+      // alert("Open Notification: " + notify.body)
     }
 
     return () => {
-      console.log("[App] unRegister")
+      //console.log("[App] unRegister")
       fcmService.unRegister()
       localNotificationService.unregister()
     }
@@ -64,13 +58,11 @@ export default function App() {
   }, [])
 
   return (
-    <View style={styles.container}>
-      <Text>Sample React Native Firebase V7</Text>
-      <Button
-        title="Press me"
-        onPress={() => localNotificationService.cancelAllLocalNotifications()}
-      />
-    </View>
+
+    <ChatProv>
+      <Main />
+    </ChatProv>
+
   )
 
 }

@@ -1,8 +1,7 @@
 import React, { createContext, useState, useRef, useEffect } from 'react'
+import useAppState from 'react-native-appstate-hook'
+import { BackHandler } from 'react-native'
 import io from 'socket.io-client'
-
-
-
 
 export const SockContext = createContext()
 
@@ -10,6 +9,52 @@ export const SockContext = createContext()
 export default function ChatProv(props) {
 
     const socket = useRef()
+    const [connected, setConnected] = useState(false)
+
+    const { appState } = useAppState({
+        onChange: (newAppState) => { },
+        onForeground: () => {
+            if (!connected) {
+                connect()
+
+                socket.current.on('client_message', (data) => {
+                    const new_msg = { from: 1, msg: data.msg }
+                    addMessageToChat(data.from, new_msg)
+                })
+
+                socket.current.on('new_client_conn', (new_chat) => {
+                    setChats(chats => [...chats, new_chat])
+                })
+
+                socket.current.on('existing_clients', (data) => {
+                    console.log("existing conv")
+                    setChats(data)
+                })
+
+                /*socket.current.on('ping', () => {
+                    socket.current.emit('ping_receive');
+                })*/
+
+                socket.current.on('client_disconnected', (sock) => {
+
+                    for (let [i, chat] of chatRef.current.entries()) {
+                        if (chat.socket_id === sock) {
+                            socket.current.emit('client_conversation', chat)
+                            chatRef.current.splice(i, 1)
+                            break
+                        }
+                    }
+                    setChats(chats => chatRef.current)
+                })
+            }
+
+
+        },
+        onBackground: () => {
+            socket.current.disconnect()
+            setConnected(false)
+        },
+    });
 
     // const testdata = [{
     //     name: 'Franco di Nápoli', email: 'francoadinapoli@gmail.com', tel: '011 2191 6528', socket_id: "2",
@@ -20,16 +65,10 @@ export default function ChatProv(props) {
     // const [chats, setChats] = useState(testdata)
     const chatRef = useRef()
 
-
-
     useEffect(() => {
 
-
-        //socket.current = io("http://api.maxpower-ar.com/")
-
-
-        //socket.current.emit('server_conn')
-
+        if (!connected)
+            connect()
 
 
         socket.current.on('client_message', (data) => {
@@ -41,9 +80,14 @@ export default function ChatProv(props) {
             setChats(chats => [...chats, new_chat])
         })
 
-        socket.current.on('ping', () => {
-            socket.current.emit('ping_receive');
+        socket.current.on('existing_clients', (data) => {
+            console.log("existing conv")
+            setChats(data)
         })
+
+        /*socket.current.on('ping', () => {
+            socket.current.emit('ping_receive');
+        })*/
 
         socket.current.on('client_disconnected', (sock) => {
 
@@ -64,7 +108,7 @@ export default function ChatProv(props) {
 
     useEffect(() => {
         chatRef.current = [...chats]
-        orderByTimestamp()
+        //orderByTimestamp()
 
     }, [chats])
 
@@ -90,10 +134,10 @@ export default function ChatProv(props) {
             }
         }
         setChats(chats => old)
-        orderByTimestamp()
+        //orderByTimestamp()
     }
 
-    const orderByTimestamp = () => {
+    /*const orderByTimestamp = () => {
         let old = chatRef.current
 
         for (let i = 0; i < old.length - 1; i++) {
@@ -115,10 +159,16 @@ export default function ChatProv(props) {
         }
         setChats(chats => old)
 
+    }*/
+
+    const connect = () => {
+        socket.current = io("http://api.maxpower-ar.com/")
+        socket.current.emit('server_conn')
+        setConnected(true)
     }
 
     return (
-        <SockContext.Provider value={{ chats, sendMessageServer }}>
+        <SockContext.Provider value={{ chats, sendMessageServer, connect }}>
             {props.children}
         </SockContext.Provider>
     )

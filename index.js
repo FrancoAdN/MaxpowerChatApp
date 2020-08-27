@@ -1,8 +1,24 @@
-import { registerRootComponent } from 'expo';
 
+import { StatusBar } from 'expo-status-bar';
+import React from 'react'
+import { AppRegistry } from 'react-native';
 import App from './App';
+import messaging from '@react-native-firebase/messaging';
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in the Expo client or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+});
+
+function HeadlessCheck({ isHeadless }) {
+    if (isHeadless) {
+        // App has been launched in the background by iOS, ignore
+        return null;
+    }
+
+    return <App />;
+}
+
+AppRegistry.registerComponent('main', () => HeadlessCheck);
+//registerRootComponent(App);
+
